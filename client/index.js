@@ -31,10 +31,12 @@ angular.module('day-trader', ['firebase'])
 
   };
   $scope.buy = function(){
-    symbol = $filter('uppercase')($scope.symbol);
+   symbol = $filter('uppercase')($scope.symbol);
+  //  $scope.portfolio.name.symbol = symbol;
     console.log(symbol);
     $http.jsonp('http://dev.markitondemand.com/Api/v2/Quote/jsonp?symbol='+ symbol +'&callback=JSON_CALLBACK').then(function(response){
-  console.info(response.data.LastPrice);
+  var price = $scope.portfolio.quantity *(response.data.LastPrice);
+  $scope.portfolios.$add($scope.portfolio);
   });
   };
 
