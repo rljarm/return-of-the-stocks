@@ -14,6 +14,40 @@ html(lang='en', ng-app='day-trader')
       .row
         .col-xs-12
           h1 Day Trader
+      .row(ng-show='isToggleButton') 
+        .col-xs-12
+          button.btn.btn-info(ng-click='toggleForm()') Change User Info
+      .row(ng-show='haveUserInfo')
+        .col-xs-6
+          .form-group
+            label(for='name') Name
+            input#name(type='text', ng-model='user.name')
+          .form-group
+            label(for='balance') Balance
+            input#balance(type='number', ng-model='user.balance')
+            button.btn.btn-danger.btn-sm(ng-click='start()') Start
+        .col-xs-6
+      .row
+        .col-xs-6
+          h2 Name: {{user.name}}
+          h2 Balance: {{user.balance | currency}}
+        .col-xs-6
+      .row
+        .col-xs-12
+          .form-group
+            label(for='buildPort')
+            input#buildPort(type='text', ng-model='portfolio.name')
+            button.btn.btn-info.btn-xs(ng-click='buildPort()') Add Portfolio
+      .row
+        .col-xs-12
+          .form-group
+            label(for='symbol') Symbol
+            input#symbol(type='text', ng-model='symbol')
+            select
+              option(ng-repeat='portfolio in portfolios') {{portfolio.name}}
+            label(for='quantity') Quantity
+            input#quantity(type='number', ng-model='quantity')
+            button.btn.btn-danger.btn-sm(ng-click='buy()') Buy
 
     script(src='/vendor/jquery/dist/jquery.min.js')
     script(src='/vendor/bootstrap/dist/js/bootstrap.min.js')
