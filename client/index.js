@@ -12,6 +12,10 @@ angular.module('day-trader', ['firebase'])
   var afPort = $firebaseArray(fbPort);
   $scope.portfolios = afPort;
   var symbol = $scope.symbol;
+  var fbStock = $scope.fbRoot.child('Stocks');
+  var afStock = $firebaseArray(fbStock);
+  $scope.stocks = afStock;
+  $scope.total = 0;
 
   // $scope.isToggleButton = true;
   $scope.haveUserInfo = true;
@@ -31,13 +35,22 @@ angular.module('day-trader', ['firebase'])
 
   };
   $scope.buy = function(){
-   symbol = $filter('uppercase')($scope.symbol);
-  //  $scope.portfolio.name.symbol = symbol;
+   symbol = $filter('uppercase')($scope.stock.symbol);
+
     console.log(symbol);
     $http.jsonp('http://dev.markitondemand.com/Api/v2/Quote/jsonp?symbol='+ symbol +'&callback=JSON_CALLBACK').then(function(response){
-  var price = $scope.portfolio.quantity *(response.data.LastPrice);
-  $scope.portfolios.$add($scope.portfolio);
+   $scope.stock.price = response.data.LastPrice;
+   $scope.total = $scope.total + $scope.stock.quantity * response.data.LastPrice;
+   console.log($scope.total);
+
+  $scope.stocks.$add($scope.stock);
+  newTotal($scope.stock.price, $scope.stock.quantity);
+
   });
   };
+  function newTotal(price, qty){
+    $scope.user.balance -= price * qty;
+    $scope.user.$save();
+  }
 
 }]);

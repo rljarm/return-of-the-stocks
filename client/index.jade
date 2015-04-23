@@ -42,24 +42,30 @@ html(lang='en', ng-app='day-trader')
         .col-xs-12
           .form-group
             label(for='symbol') Symbol
-            input#symbol(type='text', ng-model='portfolio.symbol')
-            select(ng-model='portfolio.name')
+            input#symbol(type='text', ng-model='stock.symbol')
+            select(ng-model='stock.portfolio')
               option(ng-repeat='portfolio in portfolios') {{portfolio.name}}
             label(for='quantity') Quantity
-            input#quantity(type='number', ng-model='portfolio.quantity')
+            input#quantity(type='number', ng-model='stock.quantity')
             button.btn.btn-danger.btn-sm(ng-click='buy()') Buy
       .row
         col-xs-12
-          table.table.table-striped(ng-repeat='portfolio in portfolios') {{portfolio.name}}
+          table.table.table-striped(ng-repeat='portfolio in portfolios')
             thead
               tr
                 th(colspan='3') {{portfolio.name | uppercase}}
               tr
                 th Symbol
                 th Quantity
-                th Total Cost
+                th 
               tbody
-                //- tr(ng-repeat='')
+                tr(ng-repeat='stock in stocks | filter: portfolio.name')
+                  td {{stock.symbol}}
+                  td {{stock.quantity}}
+                  td {{stock.price | currency}}
+      .row
+        col-xs-12
+          #total: h2 Total: {{total | number:2}}
 
     script(src='/vendor/jquery/dist/jquery.min.js')
     script(src='/vendor/bootstrap/dist/js/bootstrap.min.js')
